@@ -39,3 +39,8 @@ body {
 .max-bid {
   padding: 10px 0 0 10px;
 }
+
+.btn.bid {
+  margin-top: 10px;
+  padding: 10px 40px 10px 40px;
+}
