@@ -1,0 +1,33 @@
+<template name="availableTeams">
+  <div class="available-teams">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Record</th>
+          <th>Expected Record</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each teams}}
+        <tr>
+          <td>
+            {{ name }}
+          </td>
+          <td>
+          </td>
+          <td>
+            
+          </td>
+          <td>
+            {{#if squad.nominate}}
+            <button class="btn btn-small nominate" id="{{ _id }}">Nominate</button>
+            {{/if }}
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>

@@ -1,0 +1,37 @@
+body {
+  padding-top: 60px;
+}
+
+.left {
+  width: 80%;
+  height: 100%;
+  float: left;
+  overflow-y: auto;
+  position: fixed;
+}
+
+.squads {
+  position: fixed;
+  right: 0;
+  width: 20%;
+  height: 100%;
+  float: right;
+  padding: 10px 10px 80px 10px;
+  overflow-y: auto;
+}
+
+.auction-block {
+  width: 80%;
+  height: 200px;
+  padding: 20px 20px 20px 20px;
+  position: fixed;
+}
+
+.available-teams {
+  height: 100%;
+  width: 80%;
+  padding: 20px 20px 300px 20px;
+  overflow-y: auto;
+  position: fixed;
+  top: 200px;
+}
