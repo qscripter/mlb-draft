@@ -2,7 +2,8 @@
   <div class="squads">
     <h3>Squads</h3>
     {{#each squads }}
-    <h4>{{ name }}</h4>
+    <h4 class="pull-left">{{ name }}</h4>
+    <span class="pull-left max-bid">max bid: ${{ maxBid }}</span>
     <table class="table">
       <thead>
         <tr>
