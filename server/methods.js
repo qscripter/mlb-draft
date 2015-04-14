@@ -36,6 +36,26 @@ var teams = [
   'Colorado'
 ];
 
+function nextNominator () {
+  var previousNominator = Squads.findOne({nominate: true});
+  var squads = Squads.find().fetch();
+  squads = _.sortBy(squads, function (squad) {
+    return squad.nominateOrder;
+  });
+  var indexOfPrevious = _.indexOf(_.pluck(squads, '_id'), previousNominator._id);
+  for (var i=indexOfPrevious+1; i < squads.length; i++) {
+    if (squads[i].teams.length < 3) {
+      return squads[i]._id;
+    }
+  }
+  for (var i=0; i < squads.length; i++) {
+    if (squads[i].teams.length < 3) {
+      return squads[i]._id;
+    }
+  }
+  return false;
+}
+
 function tick () {
   var team = Teams.findOne(onBlock);
   if  (team.clock === 1) {
@@ -52,12 +72,16 @@ function tick () {
     Squads.update({name: team.bidder}, {$set: {maxBid: squad.maxBid - team.highBid + 1}});
 
     var teamsOwned = Teams.find({owned: true}).count();
+    var squadsAlive = Squads.find({$where: 'this.teams.length < 3'}).count();
+    var next = nextNominator();
     Squads.update({}, {$set: {nominate: false}}, {multi: true});
-    Squads.update({nominateOrder: teamsOwned%10}, {$set: {
+    Squads.update(next, {$set: {
       nominate: true,
       nominateTime: 15
     }});
-    nominateInterval = Meteor.setInterval(nominateTick, 1000);
+    if (Teams.find({owned: false}).count() > 0) {
+      nominateInterval = Meteor.setInterval(nominateTick, 1000);
+    }
   }
   Teams.update(onBlock, {$set: {clock: team.clock - 1}});
 }
@@ -65,7 +89,7 @@ function tick () {
 function nominateTick () {
   var squad = Squads.findOne({nominate: true});
   if (squad.nominateTime === 1) {
-    var team = Teams.findOne({owned: false});
+    var team = Teams.find({owned: false}, {sort: {projW: -1}}).fetch()[0];
     nominateTeam(team._id, squad.name);
   }
   Squads.update(squad._id, {$set: {nominateTime: squad.nominateTime - 1}});
@@ -74,7 +98,8 @@ function nominateTick () {
 function nominateTeam (id, squadName) {
     var team = Teams.findOne(id);
     var squad = Squads.findOne({name: squadName});
-    if (squad.nominate && !team.owned) {
+    var nominatedTeam = Teams.findOne({onBlock: true});
+    if (squad.nominate && !team.owned && !nominatedTeam) {
       onBlock = id;
       Teams.update({}, {$set: {onBlock: false}}, {multi: true});
       Teams.update(id, {$set: {
@@ -83,7 +108,7 @@ function nominateTeam (id, squadName) {
         highBid: 1,
         bidder: squadName
       }});
-      Squads.update(squad._id, {$set: {nominate: false}});
+      //Squads.update(squad._id, {$set: {nominate: false}});
       Meteor.clearInterval(nominateInterval);
       interval = Meteor.setInterval(tick, 1000);
     }
