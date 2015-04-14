@@ -108,11 +108,8 @@ Meteor.methods({
       Squads.remove({});
 
       if (Teams.find().fetch().length === 0) {
-        for (var i=0; i < teams.length; i++) {
-          Teams.insert({
-            name: teams[i],
-            owned: false
-          });
+        for (var i=0; i < teamObjects.length; i++) {
+          Teams.insert(teamObjects[i]);
         }
       }
 
