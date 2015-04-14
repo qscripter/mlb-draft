@@ -1,7 +1,9 @@
 <template name="pickSquad">
-  <ul>
-    {{#each squads}}
-    <li><a href="/squad/{{ name }}">{{ name }}</a></li>
-    {{/each }}
-  </ul>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-1">
+      {{#each squads}}
+      <h4><a href="/squad/{{ name }}">{{ name }}</a></h4>
+      {{/each }}
+    </div>
+  </div>
 </template>
