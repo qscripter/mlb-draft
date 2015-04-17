@@ -116,10 +116,10 @@ function nominateTeam (id, squadName) {
 
 Meteor.methods({
   nominate: nominateTeam,
-  bid: function (squadName) {
+  bid: function (squadName, bid) {
     var team = Teams.findOne({onBlock: true});
     var squad = Squads.findOne({name: squadName});
-    if (squadName != team.bidder && team.clock > 0 && team.highBid < squad.maxBid && squad.teams.length < 3) {
+    if (squadName != team.bidder && team.clock > 0 && team.highBid < squad.maxBid && squad.teams.length < 3 && team.highBid < bid) {
       Teams.update({onBlock: true}, {$set: {
         highBid: team.highBid + 1,
         clock: 15,

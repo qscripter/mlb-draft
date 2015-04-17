@@ -5,18 +5,15 @@
       <div class="col-md-4">
         <h2>{{ teamOnBlock.name }}</h2>
       </div>
-      <div class="col-md-2">
-        <h3>{{ teamOnBlock.bidder }}</h3>
+      <div class="col-md-4">
+        <h3>Current Bid: ${{ teamOnBlock.highBid }} by {{ teamOnBlock.bidder }}</h3>
       </div>
       <div class="col-md-2">
-        <h3> {{ teamOnBlock.clock }} sec</h3>
+        <input type="text" class="dial" data-min="0" data-max="15" data-fgColor="{{ knobColor }}" value="{{ teamOnBlock.clock }}">
       </div>
       <div class="col-md-2">
-        <h3>${{ teamOnBlock.highBid }}</h3>
-      </div>
-      <div class="col-md-2">
-        <button class="btn btn-lg btn-primary bid">
-          Bid
+        <button class="btn btn-lg btn-primary bid" data-bid="{{ bidValue }}">
+          Bid ${{ bidValue }}
         </button>
       </div>
     </div>
