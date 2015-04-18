@@ -2,7 +2,7 @@ var interval;
 var nominateInterval;
 var onBlock;
 
-var playerNames = ["Quinn", "Topher", "Andy", "Tommy", "Pecos", "Lentz", "Nico", "PVG", "Trey", "Reid"];
+var playerNames = ['Quinn', 'Topher', 'Andy', 'Tommy', 'Pecos', 'Lentz', 'Nico', 'PVG', 'Trey', 'Reid'];
 var teams = [
   'Atlanta',
   'Baltimore',
@@ -128,6 +128,8 @@ Meteor.methods({
     if (passkey === 'foo') {
       Teams.remove({});
       Squads.remove({});
+      Meteor.clearInterval(interval);
+      Meteor.clearInterval(nominateInterval);
 
       if (Teams.find().fetch().length === 0) {
         for (var i=0; i < teamObjects.length; i++) {
