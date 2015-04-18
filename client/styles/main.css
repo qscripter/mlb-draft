@@ -22,7 +22,7 @@ body {
 
 .auction-block {
   width: 80%;
-  height: 200px;
+  height: 160px;
   padding: 20px 20px 20px 20px;
   position: fixed;
 }
@@ -33,7 +33,7 @@ body {
   padding: 20px 20px 300px 20px;
   overflow-y: auto;
   position: fixed;
-  top: 200px;
+  top: 160px;
 }
 
 .chat {
