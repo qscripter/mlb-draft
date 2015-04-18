@@ -18,13 +18,15 @@ body {
   float: right;
   padding: 10px 10px 80px 10px;
   overflow-y: auto;
+  border-left: 1px solid #ddd;
 }
 
 .auction-block {
   width: 80%;
-  height: 160px;
-  padding: 20px 20px 20px 20px;
+  height: 120px;
+  padding: 10px 20px 10px 20px;
   position: fixed;
+  top: 50px;
 }
 
 .available-teams {
@@ -33,7 +35,8 @@ body {
   padding: 20px 20px 300px 20px;
   overflow-y: auto;
   position: fixed;
-  top: 160px;
+  top: 170px;
+  border-top: 1px solid #ddd;
 }
 
 .chat {
@@ -42,10 +45,16 @@ body {
   position: fixed;
   bottom: 0;
   z-index: 1000;
+  min-height: 200px;
 }
 
 .chat-panel {
   height: 100%
+}
+
+.chat-type {
+  position: fixed;
+  bottom: 5px;
 }
 
 .max-bid {
