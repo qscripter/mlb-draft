@@ -17,7 +17,6 @@ Template.auctionBlock.helpers({
     var squad = Squads.findOne({name: Session.get('squad')});
     var team = Teams.findOne({onBlock: true});
     if (squad && team && squad.maxBid > team.highBid && squad.teams.length < 3) {
-      console.log(team);
       return true;
     }
     return false;
