@@ -1,3 +1,5 @@
+var clock = 15;
+
 Template.auctionBlock.helpers({
   teamOnBlock: function () {
     return Teams.findOne({onBlock: true});
@@ -5,15 +7,54 @@ Template.auctionBlock.helpers({
   nominate: function () {
     return Squads.findOne({nominate: true});
   },
-  knobColor: function () {
-    if (Teams.findOne({onBlock: true}).clock > 5) {
-      return 'green';
-    } else {
-      return 'red';
+  bidValue: function () {
+    var team = Teams.findOne({onBlock: true});
+    if (team)  {
+      return Teams.findOne({onBlock: true}).highBid + 1;
     }
   },
-  bidValue: function () {
-    return Teams.findOne({onBlock: true}).highBid + 1;
+  canBid: function () {
+    var squad = Squads.findOne({name: Session.get('squad')});
+    var team = Teams.findOne({onBlock: true});
+    if (squad && team && squad.maxBid > team.highBid && squad.teams.length < 3) {
+      console.log(team);
+      return true;
+    }
+    return false;
+  }
+});
+
+Tracker.autorun(function () {
+  var team = Teams.findOne({onBlock: true});
+  var color = 'green';
+  if (team) {
+    if (team.clock < 6) {
+      color = 'red';
+    }
+    $('.dial').trigger('configure', {
+      'fgColor': color,
+      'inputColor': color
+    });
+    $('.dial')
+      .val(team.clock)
+      .trigger('change');
+  }
+});
+
+Tracker.autorun(function () {
+  var squad = Squads.findOne({nominate: true});
+  var color = 'green';
+  if (squad) {
+    if (squad.nominateTime < 6) {
+      color = 'red';
+    }
+    $('.dial').trigger('configure', {
+      'fgColor': color,
+      'inputColor': color
+    });
+    $('.dial')
+      .val(squad.nominateTime)
+      .trigger('change');
   }
 });
 
@@ -28,7 +69,9 @@ Template.auctionBlock.rendered = function() {
    // init. 
    $(".dial").knob({
      'stepsize': 1,
-     'width': 50,
-     'readOnly': true
+     'width': 80,
+     'readOnly': true,
+     'value': clock,
+     'fgColor': 'green'
    });
 };

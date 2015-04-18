@@ -42,4 +42,13 @@ body {
 
 .btn.bid {
   padding: 10px 40px 10px 40px;
+  margin-top: 30px;
+}
+
+.current-bid {
+  margin-top: 43px;
+}
+
+.clock {
+  padding-top: 15px;
 }
