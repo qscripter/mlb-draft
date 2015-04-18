@@ -16,7 +16,7 @@ Template.auctionBlock.helpers({
   canBid: function () {
     var squad = Squads.findOne({name: Session.get('squad')});
     var team = Teams.findOne({onBlock: true});
-    if (squad && team && squad.maxBid > team.highBid && squad.teams.length < 3) {
+    if (squad && team && squad.maxBid > team.highBid && squad.teams.length < 3 && team.bidder != Session.get('squad')) {
       return true;
     }
     return false;

@@ -38,10 +38,7 @@ var teams = [
 
 function nextNominator () {
   var previousNominator = Squads.findOne({nominate: true});
-  var squads = Squads.find().fetch();
-  squads = _.sortBy(squads, function (squad) {
-    return squad.nominateOrder;
-  });
+  var squads = Squads.find({}, {sort: {nominateOrder: 1}}).fetch();
   var indexOfPrevious = _.indexOf(_.pluck(squads, '_id'), previousNominator._id);
   for (var i=indexOfPrevious+1; i < squads.length; i++) {
     if (squads[i].teams.length < 3) {
