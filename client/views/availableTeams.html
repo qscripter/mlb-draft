@@ -1,11 +1,12 @@
 <template name="availableTeams">
   <div class="available-teams">
-    <table class="table">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th></th>
+          <th></th>
           <th colspan="6" class="text-center">
-            2015 Projected
+            2015 Projected Stats
           </th>
         </tr>
         <tr>
@@ -33,9 +34,9 @@
           <td>{{ projRDif }}</td>
           <td>{{ projRSG }}</td>
           <td>{{ projRAG }}</td>
-          <td>
+          <td class="nominate">
             {{#if ableToNominate}}
-            <button class="btn btn-small nominate" id="{{ _id }}">Nominate</button>
+            <button class="btn btn-sm btn-primary nominate" id="{{ _id }}">Nominate</button>
             {{/if }}
           </td>
         </tr>

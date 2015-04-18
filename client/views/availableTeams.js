@@ -1,6 +1,6 @@
 Template.availableTeams.helpers({
   teams: function () {
-    return Teams.find({owned: false}, {sort: {projW: -1}});
+    return Teams.find({owned: false}, {sort: {projW: -1, projRDif: -1}});
   },
   squad: function () {
     return Squads.findOne({name: Session.get('squad')});
