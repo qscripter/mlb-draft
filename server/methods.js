@@ -2,7 +2,7 @@ var interval;
 var nominateInterval;
 var onBlock;
 
-var playerNames = ['Quinn', 'Topher', 'Andy', 'Tommy', 'Pecos', 'Lentz', 'Nico', 'PVG', 'Trey', 'Reid'];
+var playerNames = ['Quinn', 'Topher', 'Andy', 'Tommy', 'Pecos', 'Lentz', 'Nico', 'PVG', 'Zach', 'Reid'];
 
 function nextNominator() {
   var previousNominator = Squads.findOne({nominate: true});
