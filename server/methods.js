@@ -89,7 +89,30 @@ function tick () {
 function nominateTick () {
   var squad = Squads.findOne({nominate: true});
   if (squad.nominateTime === 1) {
-    var team = Teams.find({owned: false}, {sort: {projW: -1}}).fetch()[0];
+    var autoBids = _.chain(squad.autoBids)
+      .map(function(value, key) {
+        return {
+          value: value,
+          id: key
+        };
+      })
+      .filter(function(item) {
+        return item.value > 0;
+      })
+      .map(function(item) {
+        return item.id;
+      })
+      .value();
+    var query = {
+      owned: false,
+      _id: {
+        $in: autoBids
+      }
+    };
+    var team = Teams.find(query, {sort: {projW: -1}}).fetch()[0];
+    if (!team) {
+      team = Teams.find({owned: false}, {sort: {projW: -1}}).fetch()[0];
+    }
     nominateTeam(team._id, squad.name);
   }
   Squads.update(squad._id, {$set: {nominateTime: squad.nominateTime - 1}});
@@ -129,7 +152,7 @@ Meteor.methods({
       if (Teams.find().fetch().length === 0) {
         for (var i=0; i < teamObjects.length; i++) {
           var id = Teams.insert(teamObjects[i]);
-          autoBids[id] = 0;
+          autoBids[id] = 1;
         }
       }
 
