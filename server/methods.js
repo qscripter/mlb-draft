@@ -3,38 +3,6 @@ var nominateInterval;
 var onBlock;
 
 var playerNames = ['Quinn', 'Topher', 'Andy', 'Tommy', 'Pecos', 'Lentz', 'Nico', 'PVG', 'Trey', 'Reid'];
-var teams = [
-  'Atlanta',
-  'Baltimore',
-  'Chicago Sox',
-  'NY Yankees',
-  'LA Angels',
-  'San Diego',
-  'LA Dodgers',
-  'Milwaukee',
-  'Toronto',
-  'Texas',
-  'Cincinnati',
-  'Minnesota',
-  'Oakland',
-  'Pittsburgh',
-  'Miami',
-  'Washington',
-  'Seattle',
-  'Chicago Cubs',
-  'Detroit',
-  'Arizona',
-  'NY Mets',
-  'San Francisco',
-  'Houston',
-  'Tampa Bay',
-  'St. Louis',
-  'Kansas City',
-  'Philadelphia',
-  'Boston',
-  'Cleveland',
-  'Colorado'
-];
 
 function nextNominator() {
   var previousNominator = Squads.findOne({nominate: true});

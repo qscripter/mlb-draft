@@ -2,6 +2,10 @@ body {
   padding-top: 60px;
 }
 
+.content {
+  padding: 20px;
+}
+
 .left {
   width: 80%;
   height: 100%;

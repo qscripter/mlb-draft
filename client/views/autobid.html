@@ -1,0 +1,23 @@
+<template name="autobid">
+  <div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>{{ squad.name }} Max Autobid Values</h1>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-1">
+      <form class="form-horizontal">
+        {{#each autoBids }}
+        <div class="form-group">
+          <label class="col-sm-10 control-label">{{ team teamId }}</label>
+          <div class="col-sm-2">
+            <input type="number" class="form-control" id="{{ teamId }}" value="{{ autoBid }}">
+          </div>
+        </div>
+        {{/each }}
+      </form>
+    </div>
+  </div>
+</template>
