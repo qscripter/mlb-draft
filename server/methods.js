@@ -36,7 +36,7 @@ var teams = [
   'Colorado'
 ];
 
-function nextNominator () {
+function nextNominator() {
   var previousNominator = Squads.findOne({nominate: true});
   var squads = Squads.find({}, {sort: {nominateOrder: 1}}).fetch();
   var indexOfPrevious = _.indexOf(_.pluck(squads, '_id'), previousNominator._id);
@@ -51,6 +51,40 @@ function nextNominator () {
     }
   }
   return false;
+}
+
+function bid(squadName, bid) {
+  var team = Teams.findOne({onBlock: true});
+  var squad = Squads.findOne({name: squadName});
+  if (squadName != team.bidder && team.clock > 0 && team.highBid < squad.maxBid && squad.teams.length < 3 && team.highBid < bid) {
+    Teams.update({onBlock: true}, {$set: {
+      highBid: team.highBid + 1,
+      clock: 15,
+      bidder: squadName
+    }});
+  }
+}
+
+function processAutoBid(teamId) {
+  var team = Teams.findOne(teamId);
+  var autoBidQuery = {};
+  var squadsBidding = [];
+  autoBidQuery['autoBids.' + teamId] = {
+    $gt: team.highBid
+  };
+  autoBidQuery.maxBid = {
+    $gte: team.highBid
+  };
+  autoBidQuery.teams = {
+    $not: {
+      $size: 3
+    }
+  };
+  squadsBidding = Squads.find(autoBidQuery).fetch();
+  if (squadsBidding.length) {
+    var randSquad = squadsBidding[_.random(squadsBidding.length-1)];
+    bid(randSquad.name, team.highBid + 1);
+  }
 }
 
 function tick () {
@@ -81,6 +115,7 @@ function tick () {
     }
   }
   Teams.update(onBlock, {$set: {clock: team.clock - 1}});
+  processAutoBid(onBlock);
 }
 
 function nominateTick () {
@@ -105,6 +140,7 @@ function nominateTeam (id, squadName) {
         highBid: 1,
         bidder: squadName
       }});
+      
       //Squads.update(squad._id, {$set: {nominate: false}});
       Meteor.clearInterval(nominateInterval);
       interval = Meteor.setInterval(tick, 1000);
@@ -113,27 +149,19 @@ function nominateTeam (id, squadName) {
 
 Meteor.methods({
   nominate: nominateTeam,
-  bid: function (squadName, bid) {
-    var team = Teams.findOne({onBlock: true});
-    var squad = Squads.findOne({name: squadName});
-    if (squadName != team.bidder && team.clock > 0 && team.highBid < squad.maxBid && squad.teams.length < 3 && team.highBid < bid) {
-      Teams.update({onBlock: true}, {$set: {
-        highBid: team.highBid + 1,
-        clock: 15,
-        bidder: squadName
-      }});
-    }
-  },
+  bid: bid,
   reset: function (passkey) {
     if (passkey === 'foo') {
       Teams.remove({});
       Squads.remove({});
       Meteor.clearInterval(interval);
       Meteor.clearInterval(nominateInterval);
+      var autoBids = {};
 
       if (Teams.find().fetch().length === 0) {
         for (var i=0; i < teamObjects.length; i++) {
-          Teams.insert(teamObjects[i]);
+          var id = Teams.insert(teamObjects[i]);
+          autoBids[id] = 0;
         }
       }
 
@@ -144,7 +172,8 @@ Meteor.methods({
             maxBid: 28,
             teams: [],
             nominateOrder: i,
-            nominate: (i === 0)
+            nominate: (i === 0),
+            autoBids: autoBids
           });
         }
       }
